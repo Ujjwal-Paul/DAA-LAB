@@ -51,3 +51,14 @@ int main(){
     solve(size, arr);
     return 0;
 }
+
+
+/* 
+--------SAMPLE INPUT & OUTPUT-----------
+
+Enter Size of the Array:8
+Enter Elements in 'Ascending Order': 4 5 6 7 8 9 10 11
+Enter an element to find: 45
+Element not Present in the given Array.
+
+*/
