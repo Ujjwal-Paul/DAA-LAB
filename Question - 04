@@ -1,0 +1,47 @@
+// #4 - Find max & min element in an Array by Divide and Conquer Approach
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> findMaxMin(vector<int>& arr, int start, int end){
+    // if only one or two element is present
+    if((start == end) || (start == end - 1)){
+        return {max(arr[start], arr[end]), min(arr[start], arr[end])};
+    }
+    
+    int mid = (start + end) / 2;
+    vector<int> leftArray = findMaxMin(arr, start, mid);
+    vector<int> rightArray = findMaxMin(arr, mid + 1, end);
+    return {max(leftArray[0], rightArray[0]), min(leftArray[1], rightArray[1])};
+}
+
+void solve(int size, vector<int>& arr){
+    // ans[0] = for max, ans[1] = for min.
+    vector<int> ans = findMaxMin(arr, 0, size - 1);
+    cout<<"The Maximum Element Present in the Array is: "<<ans[0]<<endl;
+    cout<<"The Minimum Element Present in the Array is: "<<ans[1]<<endl;
+}
+
+int main(){
+    int size;
+    cout<<"Enter Size of the Array:";
+    cin>>size;
+    
+    vector<int> arr(size);
+    cout<<"Enter Elements in the Array: ";
+    for(int i=0;i<size;i++)cin>>arr[i];
+    
+    solve(size, arr);
+    return 0;
+}
+
+
+/* 
+--------SAMPLE INPUT & OUTPUT-----------
+-----------Sample Input 1-----------
+Enter Size of the Array:10
+Enter Elements in the Array: 20 80 40 70 60 90 55 95 85 15
+The Maximum Element Present in the Array is: 95
+The Minimum Element Present in the Array is: 15
+
+*/
