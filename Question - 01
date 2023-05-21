@@ -1,0 +1,53 @@
+// #1 - Binary Search
+
+#include<bits/stdc++.h>
+using namespace std;
+
+// Using Recursion
+int binarySearch(vector<int>& arr, int start, int end, int key){
+    if(start > end)return -1;
+    
+    int mid = (start + end) / 2;
+    if(arr[mid] == key)return mid;
+    
+    if(arr[mid] > key)return binarySearch(arr, start, mid - 1, key);
+    return binarySearch(arr, mid + 1, end, key);
+}
+
+/*
+// Using Loop
+int binarySearch(vector<int>& arr, int start, int end, int key){
+    while(start <= end){
+        int mid = (start + end) / 2;
+        if(arr[mid] == key)return mid;
+        else if(arr[mid] > key)end = mid - 1;
+        else start = mid + 1;
+    }
+    return -1;
+}
+*/
+
+void solve(int size, vector<int>& arr){
+    int key;
+    cout<<"Enter an element to find: ";
+    cin>>key;
+    int index = binarySearch(arr, 0, size - 1, key);
+    if(index != -1){
+        cout<<"Element Found in "<< index << " index.";
+    }else{
+        cout<<"Element not Present in the given Array.";
+    }
+}
+
+int main(){
+    int size;
+    cout<<"Enter Size of the Array:";
+    cin>>size;
+    
+    vector<int> arr(size);
+    cout<<"Enter Elements in 'Ascending Order': ";
+    for(int i=0;i<size;i++)cin>>arr[i];
+    
+    solve(size, arr);
+    return 0;
+}
