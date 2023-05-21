@@ -1,0 +1,82 @@
+// #5 - Matrix Chain Multiplication - Find total No. of scalar multiplications
+
+#include<bits/stdc++.h>
+using namespace std;
+
+/*
+// Using Recursion
+int matrixChainMultiplication(vector<int>& dimensions, int i, int j){
+    if(i == j)return 0;
+    
+    int minMultiplication = INT_MAX;
+    for(int k = i;k<j;k++){
+        int x = matrixChainMultiplication(dimensions, i, k);
+        int y = matrixChainMultiplication(dimensions, k+1, j);
+        minMultiplication = min(minMultiplication, x + y + (dimensions[i-1]*dimensions[k]*dimensions[j]));
+    }
+    return minMultiplication;
+}
+*/
+
+// Using Dynamic Programming
+int matrixChainMultiplication(vector<int>& dimensions, int start, int end){
+    vector<vector<int>> dp(end + 1, vector<int>(end+1));
+    
+    for(int a = 1;a <= end;a++){
+        for(int i=1,j=a;j <= end;i++,j++){
+            if(i == j){
+                dp[i][j] = 0;
+                continue;
+            }
+            int minMultiplication = INT_MAX;
+            for(int k=i;k<j;k++){
+                int x = dp[i][k];
+                int y = dp[k+1][j];
+                minMultiplication = min(minMultiplication, x + y + (dimensions[i-1]*dimensions[k]*dimensions[j]));
+            }
+            dp[i][j] = minMultiplication;
+        }
+    }
+    return dp[start][end];
+}
+
+void solve(int size, vector<int>& dimensions){
+    int totalScalarMultiplications = matrixChainMultiplication(dimensions, 1, size);
+    cout<<"Total Scalar Multiplications are: "<<totalScalarMultiplications;
+}
+
+int main(){
+    int size;
+    cout<<"Enter the Number of Matrices: ";
+    cin>>size;
+    
+    vector<int> dimensions(size + 1);
+    cout<<"Enter the Dimensions of all the Matrices: ";
+    for(int i=0;i<=size;i++)cin>>dimensions[i];
+    
+    solve(size, dimensions);
+    return 0;
+}
+
+
+/* 
+--------SAMPLE INPUT & OUTPUT-----------
+-----------Sample Input 1-----------
+For Input Matrices -> A(5x6), B(6x7), C(7x2), D(2x3)
+Enter the Number of Matrices: 4
+Enter the Dimensions of all the Matrices: 5 6 7 2 3
+Total Scalar Multiplications are: 174
+
+-----------Sample Input 2-----------
+For Input Matrices -> A(4x10), B(10x3), C(3x12), D(12x20), E(20x7)
+Enter the Number of Matrices: 5
+Enter the Dimensions of all the Matrices: 4 10 3 12 20 7
+Total Scalar Multiplications are: 1344
+
+****************************************************************
+The Main Formula for Calculating one cell of Resultant Matrix -->
+M[i][j] = M[i][k] + M[k+1][j] + P[i-1] * P[k] * P[j], for all (i <= k < j)
+M[i][j] will be the minimum number among all of the possible values of 'k'.
+****************************************************************
+
+*/
