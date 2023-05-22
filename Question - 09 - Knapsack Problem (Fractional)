@@ -1,0 +1,64 @@
+// #9 - Knapsack Problem (Fractional)
+
+#include<bits/stdc++.h>
+using namespace std;
+
+const bool compare(vector<int>& a, vector<int>& b){
+    int pwRatio_a = (double)a[0] / a[1];
+    int pwRatio_b = (double)b[0] / b[1];
+    return pwRatio_a > pwRatio_b;
+}
+
+double fractionalKnapsack(int items, int knapsack, vector<vector<int>>& itemInfo){
+    sort(itemInfo.begin(), itemInfo.end(), compare);
+    
+    double maxProfit = 0;
+    for(int i=0;i<items;i++){
+        if(knapsack > itemInfo[i][1]){
+            knapsack -= itemInfo[i][1];
+            maxProfit += itemInfo[i][0];
+        }
+        else{
+            maxProfit += ((double)knapsack / itemInfo[i][1]) * itemInfo[i][0];
+            break;
+        }
+    }
+    return maxProfit;
+}
+
+
+
+int main(){
+    int items;
+    cout<<"Enter No. of Items: ";
+    cin>>items;
+    
+    vector<vector<int>> itemInfo(items, vector<int>(2));
+    cout<<"Enter Items Profit-Weight:\n";
+    for(int i=0;i<items;i++){
+        cin >> itemInfo[i][0] >> itemInfo[i][1];
+    }
+    
+    int knapsack;
+    cout<<"Enter Knapsack Size: ";
+    cin>>knapsack;
+    
+    double maxProfit = fractionalKnapsack(items, knapsack, itemInfo);
+    
+    cout << "The Maximun Profit will be: " << maxProfit;
+    return 0;
+}
+
+
+/* 
+--------SAMPLE INPUT & OUTPUT-----------
+-----------Sample Input 1-----------
+Enter No. of Items: 3
+Enter Items Profit-Weight:
+60 10
+100 20
+120 30
+Enter Knapsack Size: 50
+The Maximun Profit will be: 240
+
+*/
