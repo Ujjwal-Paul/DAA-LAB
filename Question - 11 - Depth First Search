@@ -1,0 +1,92 @@
+// #11 - Depth First Search
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> dfs(int vertex, int source, vector<vector<int>>& adjMatrix){
+    vector<bool> visited(vertex, false);
+    visited[source] = true;
+    stack<int> st;
+    st.push(source);
+    
+    vector<int> reachableVertices;
+    
+    while(!st.empty()){
+        source = st.top();
+        reachableVertices.push_back(source);
+        st.pop();
+        
+        for(int i=0;i<vertex;i++){
+            if(!visited[i] && adjMatrix[source][i]){
+                st.push(i);
+                visited[i] = true;
+            }
+        }
+    }
+    return reachableVertices;
+}
+
+void print(int source, vector<int>& reachableVertices){
+    cout<<"The Depth First Search from the Source " << source << " are: ";
+    for(int i=0;i<reachableVertices.size();i++)cout<<reachableVertices[i]<<' ';
+}
+
+void solve(int vertex, vector<vector<int>>& adjList){
+    int source;
+    cout<<"Enter the Source Vertex: ";
+    cin>>source;
+    
+    vector<vector<int>> adjMatrix(vertex, vector<int>(vertex, 0));
+    for(int i=0;i<adjList.size();i++){
+        int u = adjList[i][0];
+        int v = adjList[i][1];
+
+        adjMatrix[u][v] = 1;
+        adjMatrix[v][u] = 1;
+    }
+    
+    vector<int> reachableVertices = dfs(vertex, source, adjMatrix);
+    print(source, reachableVertices);
+}
+
+int main(){
+    int vertex, edges;
+    cout<<"Enter the No. of Vertices and Edges: ";
+    cin >> vertex >> edges;
+    
+    vector<vector<int>> adjList(edges, vector<int>(2));
+    cout<<"Enter Edges in Source-Destination format:\n";
+    for(int i=0;i<edges;i++){
+        cin >> adjList[i][0] >> adjList[i][1];
+    }
+    
+    solve(vertex, adjList);
+    
+    return 0;
+}
+
+
+/* 
+--------SAMPLE INPUT & OUTPUT-----------
+-----------Sample Input 1-----------
+Sample Graph Image --> https://www.geeksforgeeks.org/wp-content/uploads/Fig-11.jpg
+Enter the No. of Vertices and Edges: 9 14
+Enter Edges in Source-Destination format:
+0 1
+1 2
+2 3
+3 4
+4 5
+5 6
+6 7
+7 0
+1 7
+7 8
+2 8
+6 8
+2 5
+3 5
+Enter the Source Vertex: 0
+The Depth First Search from the Source 0 are: 0 7 8 2 5 4 3 6 1
+
+*/
